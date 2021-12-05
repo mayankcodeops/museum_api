@@ -1,7 +1,9 @@
 import requests
 import csv
+import pdfkit
+import pandas as pd
 BASE_URL = 'https://collectionapi.metmuseum.org/public/'
-LIMIT = 2
+LIMIT = 20
 
 headers = {
     'Accept' : '*/*',
@@ -18,69 +20,43 @@ def fetch_artifact(object_id):
 for object_id in range(1,LIMIT+1):
     objects.append(fetch_artifact(object_id))
 
-print(objects)
-keys =[
-    "objectID",
-    "isHighlight", 
-    "accessionNumber",
-    "accessionYear",
-    "isPublicDomain",
-    "primaryImage",
-    "primaryImageSmall",
-    "additionalImages",
-    "constituents",
-    "department",
-    "objectName",
-    "title",
-    "culture",
-    "period",
-    "dynasty",
-    "reign",
-    "portfolio",
-    "artistRole",
-    "artistPrefix",
-    "artistDisplayName",
-    "artistDisplayBio",
-    "artistSuffix",
-    "artistAlphaSort",
-    "artistNationality",
-    "artistBeginDate",
-    "artistEndDate",
-    "artistGender",
-    "artistWikidata_URL",
-    "artistULAN_URL",
-    "objectDate",
-    "objectBeginDate",
-    "objectEndDate",
-    "medium",
-    "dimensions",
-    "dimensionsParsed",
-    "measurements",
-    "creditLine",
-    "geographyType",
-    "city",
-    "state",
-    "county",
-    "country",
-    "region",
-    "subregion",
-    "locale",
-    "locus",
-    "excavation",
-    "river",
-    "classification",
-    "rightsAndReproduction",
-    "linkResource",
-    "metadataDate",
-    "repository",
-    "objectURL",
-    "tags",
-    "objectWikidata_URL",
-    "isTimelineWork",
-    "GalleryNumber",
-]
 
-with open("museum_data.csv", "w") as museum_data:
-    writer = csv.DictWriter(museum_data, fieldnames=keys)
-    writer.writeheader()
-    writer.writerows(objects)
+
+df = pd.DataFrame(objects)
+
+#generate csv
+df.to_csv('museum.csv', mode = 'w', index = False)
+#generate html
+df.to_html('museum.html')
+#generate pdf report
+pdfkit.from_file('museum.html','museum.pdf')
+
+# converting csv to xml
+f = open('museum.csv')
+museum_csv = csv.reader(f)
+data = []
+
+for row in museum_csv:
+    data.append(row)
+
+f.close()
+
+#print(data[1:])
+def convert_row(row):
+    return """
+    <object>
+        <objectID>%s</objectID>
+        <isHighlight>%s</isHighlight>
+        <accessionNumber>%s</accessionNumber>
+        <accessionYear>%s</accessionYear>
+        <isPublicDomain>%s</isPublicDomain>
+        <department>%s<department>
+        <objectName>%s</objectName>
+        <title>%s</title>
+    </object>
+    """ % (row[0], row[1], row[2], row[3], row[4], row[9], row[10], row[11])
+
+
+
+with open('museum.xml', 'w') as museum:
+    museum.write('\n'.join([convert_row(row) for row in data[1:]]))
