@@ -1,8 +1,8 @@
 import csv
-
 import pandas as pd
 import pdfkit
 import requests
+from requests import Response
 
 BASE_URL = 'https://collectionapi.metmuseum.org/public/'
 LIMIT = 20
@@ -12,19 +12,27 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-objects = []
+objects: list[dict] = []
 
 
-def fetch_artifact(objectID):
-    response_object = requests.get(BASE_URL + 'collection/v1/objects/' + str(objectID), headers=headers)
+def fetch_artifact(objectid):
+    """
+    :param objectid: objectid for the fetched artifact from the Museum API
+    :return: This function returns the artifact fetched from the Museum API for the particular objectid
+    """
+    response_object: Response = requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
     return response_object.json()
 
 
-for objectID in range(1, LIMIT + 1):
-    objects.append(fetch_artifact(objectID))
+for objectid in range(1, LIMIT + 1):
+    objects.append(fetch_artifact(objectid))
 
 
 def flatten(artifact):
+    """
+    :param artifact: this is the artifact dictionary fetched from the Museum API
+    :return: This function returns the flattened JSON from a complex nested JSON recieved from the API response object
+    """
     try:
         for constituent in artifact['constituents']:
             for key, value in constituent.items():
@@ -32,6 +40,7 @@ def flatten(artifact):
             artifact.pop('constituents')
     except TypeError:
         pass
+
 
 for artifact in objects:
     flatten(artifact)
@@ -58,6 +67,10 @@ f.close()
 
 # print(data[1:])
 def convert_row(row):
+    """
+    :param row: This is a single record from the CSV file generated from the API data
+    :return: This function returns the XML object parsed from a single CSV record
+    """
     return """
     <object>
         <objectID>%s</objectID>
@@ -72,5 +85,6 @@ def convert_row(row):
     """ % (row[0], row[1], row[2], row[3], row[4], row[9], row[10], row[11])
 
 
+# write the XML objects in to a XML file
 with open('museum.xml', 'w') as museum:
     museum.write('\n'.join([convert_row(row) for row in data[1:]]))
