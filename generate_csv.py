@@ -19,16 +19,17 @@ headers = {
 objects: list[dict] = []
 
 
-def fetch_artifact(objectid):
-    """
-    :param objectid: objectid for the fetched artifact from the Museum API
-    :return: This function returns the artifact fetched from the Museum API for the particular objectid
-    """
-    response_object: Response = requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
-    return response_object.json()
+# def fetch_artifact(objectid):
+#     """
+#     :param objectid: objectid for the fetched artifact from the Museum API
+#     :return: This function returns the artifact fetched from the Museum API for the particular objectid
+#     """
+#     response_object: Response = requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
+#     return response_object.json()
 
-
-objects = list(map(fetch_artifact, list(range(1, LIMIT + 1))))
+objects = list(map(lambda objectid: requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
+                   .json(),
+                   list(range(1, LIMIT + 1))))
 
 # for objectid in range(1, LIMIT + 1):
 #     objects.append(fetch_artifact(objectid))
