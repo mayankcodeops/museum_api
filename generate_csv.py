@@ -28,8 +28,10 @@ def fetch_artifact(objectid):
     return response_object.json()
 
 
-for objectid in range(1, LIMIT + 1):
-    objects.append(fetch_artifact(objectid))
+objects = list(map(fetch_artifact, list(range(1, LIMIT + 1))))
+
+# for objectid in range(1, LIMIT + 1):
+#     objects.append(fetch_artifact(objectid))
 
 
 def flatten(artifact):
