@@ -49,14 +49,14 @@ df = pd.DataFrame(objects)
 try:
     df.to_csv(REPORT_DIR + 'museum.csv', mode='w', index=False)
 except OSError as err:
-    print(f'Some error has occurred during CSV generation: {}', err)
+    print(f'Some error has occurred during CSV generation: {err}', err)
 
 
 # generate html
 try:
     df.to_html(REPORT_DIR + 'museum.html')
 except OSError as err:
-    print(f'Some error has occurred during HTML reoprt generation: {err} ', err)
+    print(f'Some error has occurred during HTML report generation: {err} ', err)
 
 # generate pdf report
 try:
@@ -73,7 +73,7 @@ else:
     museum_csv = csv.reader(f)
     data = []
     for row in museum_csv:
-    data.append(row)
+        data.append(row)
 finally:
     f.close()
 
