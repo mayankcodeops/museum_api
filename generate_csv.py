@@ -65,10 +65,9 @@ for row in museum_csv:
 f.close()
 
 
-# print(data[1:])
-def convert_row(row):
+def convert_row(row1):
     """
-    :param row: This is a single record from the CSV file generated from the API data
+    :param row1: This is a single record from the CSV file generated from the API data
     :return: This function returns the XML object parsed from a single CSV record
     """
     return """
@@ -82,7 +81,7 @@ def convert_row(row):
         <objectName>%s</objectName>
         <title>%s</title>
     </object>
-    """ % (row[0], row[1], row[2], row[3], row[4], row[9], row[10], row[11])
+    """ % (row1[0], row1[1], row1[2], row1[3], row1[4], row1[9], row1[10], row1[11])
 
 
 # write the XML objects in to a XML file
