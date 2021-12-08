@@ -2,9 +2,13 @@ import csv
 import pandas as pd
 import pdfkit
 import requests
+import os
 from requests import Response
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 BASE_URL = 'https://collectionapi.metmuseum.org/public/'
+
 LIMIT = 20
 
 headers = {
@@ -48,14 +52,14 @@ for artifact in objects:
 df = pd.DataFrame(objects)
 
 # generate csv
-df.to_csv('museum.csv', mode='w', index=False)
+df.to_csv(REPORT_DIR + 'museum.csv', mode='w', index=False)
 # generate html
-df.to_html('museum.html')
+df.to_html(REPORT_DIR + 'museum.html')
 # generate pdf report
-pdfkit.from_file('museum.html', 'museum.pdf')
+pdfkit.from_file(REPORT_DIR + 'museum.html', REPORT_DIR + 'museum.pdf')
 
 # converting csv to xml
-f = open('museum.csv')
+f = open(REPORT_DIR + 'museum.csv')
 museum_csv = csv.reader(f)
 data = []
 
@@ -85,5 +89,5 @@ def convert_row(row1):
 
 
 # write the XML objects in to a XML file
-with open('museum.xml', 'w') as museum:
+with open(REPORT_DIR + 'museum.xml', 'w') as museum:
     museum.write('\n'.join([convert_row(row) for row in data[1:]]))
