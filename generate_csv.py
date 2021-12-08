@@ -2,9 +2,12 @@ import csv
 import pandas as pd
 import pdfkit
 import requests
-from requests import Response
+import os
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 BASE_URL = 'https://collectionapi.metmuseum.org/public/'
+
 LIMIT = 20
 
 headers = {
@@ -15,17 +18,9 @@ headers = {
 objects: list[dict] = []
 
 
-def fetch_artifact(objectid):
-    """
-    :param objectid: objectid for the fetched artifact from the Museum API
-    :return: This function returns the artifact fetched from the Museum API for the particular objectid
-    """
-    response_object: Response = requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
-    return response_object.json()
-
-
-for objectid in range(1, LIMIT + 1):
-    objects.append(fetch_artifact(objectid))
+objects = list(map(lambda objectid: requests.get(BASE_URL + 'collection/v1/objects/' + str(objectid), headers=headers)
+                   .json(),
+                   list(range(1, LIMIT + 1))))
 
 
 def flatten(artifact):
@@ -41,6 +36,9 @@ def flatten(artifact):
     except TypeError:
         pass
 
+# TODO: Debug return type here
+# objects = list(map(flatten, objects))
+
 
 for artifact in objects:
     flatten(artifact)
@@ -48,21 +46,36 @@ for artifact in objects:
 df = pd.DataFrame(objects)
 
 # generate csv
-df.to_csv('museum.csv', mode='w', index=False)
+try:
+    df.to_csv(REPORT_DIR + 'museum.csv', mode='w', index=False)
+except OSError as err:
+    print(f'Some error has occurred during CSV generation: {}', err)
+
+
 # generate html
-df.to_html('museum.html')
+try:
+    df.to_html(REPORT_DIR + 'museum.html')
+except OSError as err:
+    print(f'Some error has occurred during HTML reoprt generation: {err} ', err)
+
 # generate pdf report
-pdfkit.from_file('museum.html', 'museum.pdf')
+try:
+    pdfkit.from_file(REPORT_DIR + 'museum.html', REPORT_DIR + 'museum.pdf')
+except OSError as err:
+    print(f'Some error has occurred during PDF generation: {err}', err)
 
 # converting csv to xml
-f = open('museum.csv')
-museum_csv = csv.reader(f)
-data = []
-
-for row in museum_csv:
+try:
+    f = open(REPORT_DIR + 'museum.csv')
+except OSError as err:
+    print(f'Not able to open CSV file: {err}', err)
+else:
+    museum_csv = csv.reader(f)
+    data = []
+    for row in museum_csv:
     data.append(row)
-
-f.close()
+finally:
+    f.close()
 
 
 def convert_row(row1):
@@ -85,5 +98,5 @@ def convert_row(row1):
 
 
 # write the XML objects in to a XML file
-with open('museum.xml', 'w') as museum:
+with open(REPORT_DIR + 'museum.xml', 'w') as museum:
     museum.write('\n'.join([convert_row(row) for row in data[1:]]))
