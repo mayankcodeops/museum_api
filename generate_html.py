@@ -2,10 +2,10 @@ import os
 import logging
 
 
-def generate_csv(directory, filename, df):
+def generate_html(directory, filename, df):
     """
-    :param directory: directory where the CSV file needs to be written
-    :param filename: name of the CSV file to be written.
+    :param directory: directory where the html report needs to be generated.
+    :param filename:  name of the HTML file to be generated
     :param df: pandas dataframe
     """
     if not os.path.exists(directory):
@@ -14,4 +14,4 @@ def generate_csv(directory, filename, df):
         except OSError as ae:
             logging.exception("Something went wrong while creating the reports directory: {}".format(ae.args[-1]))
 
-    df.to_csv(directory + filename, mode='w', index=False)
+    df.to_html(directory, filename)
