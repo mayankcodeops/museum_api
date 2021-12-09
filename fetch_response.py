@@ -21,6 +21,6 @@ def fetch_response(endpoint, header):
         logging.exception("HTTP Error. Status Code: {}. Error: {}".format(resp.status_code, httperror.args[-1]))
         sys.exit(0)
     else:
-        logging.INFO("Response Status: {}".format(resp.status_code))
-        logging.DEBUG(resp.json())
-        return resp.json()
+        logging.info("Response Status: {}".format(resp.status_code))
+        logging.debug(resp.json())
+        return resp

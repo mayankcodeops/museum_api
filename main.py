@@ -6,12 +6,12 @@ import pandas as pd
 import pdfkit
 from pandas import DataFrame
 
-import fetch_response
-import flatten
-import generate_csv
-import generate_html
-import generate_pdf
-import generate_xml
+from fetch_response import fetch_response
+from flatten import flatten
+from generate_csv import generate_csv
+from generate_html import generate_html
+from generate_pdf import generate_pdf
+from generate_xml import generate_xml
 
 
 LIMIT = 20
@@ -31,7 +31,7 @@ REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 if __name__ == '__main__':
     artifacts: list[dict] = list(
-        map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), headers=headers)
+        map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=headers)
             .json(),
             list(range(1, LIMIT + 1))))
     for artifact in artifacts:
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     df: DataFrame = pd.DataFrame(artifacts)
     generate_csv(REPORT_DIR, 'museum.csv', df)
     generate_html(REPORT_DIR, 'museum.html', df)
-    generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
+    # generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
     generate_xml(REPORT_DIR, 'museum.csv')
 
 

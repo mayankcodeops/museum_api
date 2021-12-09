@@ -14,4 +14,4 @@ def generate_html(directory, filename, df):
         except OSError as ae:
             logging.exception("Something went wrong while creating the reports directory: {}".format(ae.args[-1]))
 
-    df.to_html(directory, filename)
+    df.to_html(directory + filename)

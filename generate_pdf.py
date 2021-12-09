@@ -1,4 +1,4 @@
-import file_exists
+from file_exists import file_exists
 import pdfkit
 import logging
 import sys
