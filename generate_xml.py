@@ -33,7 +33,7 @@ def generate_xml(directory, csv_file):
     :param directory: directory name where the XML report is to be generated.
     :param csv_file: name of the csv file from which XML report is to be generated.
     """
-    if not file_exists(csv_file):
+    if not file_exists(os.path.join(REPORT_DIR, csv_file)):
         raise FileNotFoundError
     try:
         f = open(directory + csv_file)

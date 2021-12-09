@@ -40,26 +40,8 @@ if __name__ == '__main__':
     df: DataFrame = pd.DataFrame(artifacts)
     generate_csv(REPORT_DIR, 'museum.csv', df)
     generate_html(REPORT_DIR, 'museum.html', df)
-    # generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
+    generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
     generate_xml(REPORT_DIR, 'museum.csv')
 
-
-# # generate csv
-# try:
-#     df.to_csv(REPORT_DIR + 'museum.csv', mode='w', index=False)
-# except OSError as err:
-#     print(f'Some error has occurred during CSV generation: {err}', err)
-#
-# # generate html
-# try:
-#     df.to_html(REPORT_DIR + 'museum.html')
-# except OSError as err:
-#     print(f'Some error has occurred during HTML report generation: {err} ', err)
-#
-# # generate pdf report
-# try:
-#     pdfkit.from_file(REPORT_DIR + 'museum.html', REPORT_DIR + 'museum.pdf')
-# except OSError as err:
-#     print(f'Some error has occurred during PDF generation: {err}', err)
 
 
