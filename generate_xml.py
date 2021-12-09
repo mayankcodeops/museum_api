@@ -48,6 +48,8 @@ def generate_xml(directory, csv_file):
         f.close()
 
     # write the XML objects in to an XML file
-    with open(REPORT_DIR + 'museum.xml', 'w') as museum:
-        museum.write('\n'.join([convert_row(row) for row in data[1:]]))
-
+    try:
+        with open(REPORT_DIR + 'museum.xml', 'w') as museum:
+            museum.write('\n'.join([convert_row(row) for row in data[1:]]))
+    except OSError as err:
+        logging.exception("Writing to xml file failed due to {}".format(err))

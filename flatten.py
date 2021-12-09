@@ -1,5 +1,6 @@
-def flatten(artifact):
+def flatten(artifact: object) -> object:
     """
+    :rtype: object
     :param artifact: this is the artifact dictionary fetched from the Museum API
     :return: This function returns the flattened JSON from a complex nested JSON recieved from the API response object
     """

@@ -15,7 +15,8 @@ def generate_pdf(directory, pdf_name, html_report):
     :param html_report: html report from which PDF report is to be generated
     """
     if not file_exists(os.path.join(REPORT_DIR, html_report)):
-        raise FileNotFoundError("HTML Report file doesn't exists. Please try creating the report to generate PDF.")
+        logging.exception(f'FileNotFoundError: HTML report doesnt exist')
+        # raise FileNotFoundError("HTML Report file doesn't exists. Please try creating the report to generate PDF.")
     try:
         pdfkit.from_file(directory + pdf_name, directory + html_report)
     except IOError as ae:

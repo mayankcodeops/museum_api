@@ -1,9 +1,7 @@
-import csv
 import logging
 import os
 
 import pandas as pd
-import pdfkit
 from pandas import DataFrame
 
 from fetch_response import fetch_response
@@ -12,7 +10,6 @@ from generate_csv import generate_csv
 from generate_html import generate_html
 from generate_pdf import generate_pdf
 from generate_xml import generate_xml
-
 
 LIMIT = 20
 
@@ -42,6 +39,3 @@ if __name__ == '__main__':
     generate_html(REPORT_DIR, 'museum.html', df)
     generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
     generate_xml(REPORT_DIR, 'museum.csv')
-
-
-
