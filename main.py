@@ -14,6 +14,7 @@ from flatten import flatten
 from generate_csv import CSVConverter
 from generate_html import HTMLConverter
 from generate_pdf import PDFConverter
+from generate_xml import XMLConverter
 
 LIMIT = 20
 
@@ -50,5 +51,6 @@ if __name__ == '__main__':
     pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
     pdf_converter.generate_pdf()
 
+    xml_converter = XMLConverter(REPORT_DIR, 'museum.csv')
+    xml_converter.generate_xml()
 
-    # generate_xml(REPORT_DIR, 'museum.csv')

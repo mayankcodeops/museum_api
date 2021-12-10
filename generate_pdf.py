@@ -9,7 +9,7 @@ REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
 class PDFConverter:
-    def __int__(self, directory, pdf_name, html_report):
+    def __init__(self, directory, pdf_name, html_report):
         self.directory = directory
         self.pdf_name = pdf_name
         self.html_report = html_report
