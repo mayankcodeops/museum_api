@@ -3,6 +3,22 @@ import logging
 
 
 class CSVConverter:
+    """
+    A class for generating CSV reports from JSON data
+
+    Attributes
+    ----------
+    directory: str
+        the directory path for generating CSV reports
+    filename: str
+        name of the CSV report to be generated
+    df: pandas dataframe object
+
+    Methods
+    -------
+    generate_csv(self)
+        Generates CSV report from JSON data
+    """
     def __init__(self, directory, filename, df):
         self.df = df
         self.directory = directory

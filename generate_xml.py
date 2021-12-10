@@ -10,11 +10,27 @@ REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
 class XMLConverter:
+    """
+        A class for generating XML reports from CSV file
+
+        Attributes
+        ----------
+        directory: str
+            the directory path for generating CSV reports
+        csv_file: str
+            name of the CSV report to be generated
+
+        Methods
+        -------
+        __convert_row(self,row)
+            Takes a row of CSV data and converts it into an XML object
+        generate_xml(self)
+            Generates XML report from CSV data
+        """
     def __init__(self, directory, csv_file):
         self.directory = directory
         self.csv_file = csv_file
 
-    # @staticmethod
     def __convert_row(self, row):
         """
         :param row: This is a single record from the CSV file generated from the API data

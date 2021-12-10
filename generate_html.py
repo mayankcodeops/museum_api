@@ -3,6 +3,22 @@ import logging
 
 
 class HTMLConverter:
+    """
+        A class for generating HTML reports from JSON data
+
+        Attributes
+        ----------
+        directory: str
+            the directory path for generating HTML reports
+        filename: str
+            name of the HTML report to be generated
+        df: pandas dataframe object
+
+        Methods
+        -------
+        generate_html(self)
+            Generates CSV report from JSON data
+        """
     def __init__(self, directory, filename, df):
         self.directory = directory
         self.filename = filename

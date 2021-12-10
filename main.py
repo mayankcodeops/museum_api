@@ -6,10 +6,7 @@ from pandas import DataFrame
 
 from fetch_response import fetch_response
 from flatten import flatten
-# from generate_csv import generate_csv
-# from generate_html import generate_html
-# from generate_pdf import generate_pdf
-# from generate_xml import generate_xml
+
 
 from generate_csv import CSVConverter
 from generate_html import HTMLConverter
@@ -45,7 +42,7 @@ if __name__ == '__main__':
     csv_converter: CSVConverter = CSVConverter(REPORT_DIR, 'museum.csv', df)
     csv_converter.generate_csv()
 
-    html_converter = HTMLConverter(REPORT_DIR, 'museum.html', df)
+    html_converter: HTMLConverter = HTMLConverter(REPORT_DIR, 'museum.html', df)
     html_converter.generate_html()
 
     pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')

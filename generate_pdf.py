@@ -9,6 +9,22 @@ REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
 class PDFConverter:
+    """
+        A class for generating PDF reports from HTML file
+
+        Attributes
+        ----------
+        directory: str
+            the directory path for generating CSV reports
+        pdf_name: str
+            name of the PDF report to be generated
+        html_report: name of the HTML report from which PDF report is to be generated
+
+        Methods
+        -------
+        generate_pdf(self)
+            Generates PDF report from HTML file
+        """
     def __init__(self, directory, pdf_name, html_report):
         self.directory = directory
         self.pdf_name = pdf_name
