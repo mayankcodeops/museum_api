@@ -8,6 +8,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
+class PDFConverter:
+    pass
+
+
 def generate_pdf(directory, pdf_name, html_report):
     """
     :param directory: directory name where the PDF report is to be generated

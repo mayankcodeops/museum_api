@@ -9,6 +9,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
+class XMLConverter:
+    pass
+
+
 def convert_row(row):
     """
     :param row: This is a single record from the CSV file generated from the API data

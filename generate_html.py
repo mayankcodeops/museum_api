@@ -2,6 +2,10 @@ import os
 import logging
 
 
+class HTMLConverter:
+    pass
+
+
 def generate_html(directory, filename, df):
     """
     :param directory: directory where the html report needs to be generated.
