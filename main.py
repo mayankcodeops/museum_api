@@ -1,18 +1,17 @@
-import csv
 import logging
 import os
 
 import pandas as pd
-import pdfkit
 from pandas import DataFrame
 
 from fetch_response import fetch_response
 from flatten import flatten
-from generate_csv import generate_csv
-from generate_html import generate_html
-from generate_pdf import generate_pdf
-from generate_xml import generate_xml
 
+
+from generate_csv import CSVConverter
+from generate_html import HTMLConverter
+from generate_pdf import PDFConverter
+from generate_xml import XMLConverter
 
 LIMIT = 20
 
@@ -29,6 +28,7 @@ BASE_URL = 'https://collectionapi.metmuseum.org/public/'
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
+
 if __name__ == '__main__':
     artifacts: list[dict] = list(
         map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=headers)
@@ -38,10 +38,16 @@ if __name__ == '__main__':
         flatten(artifact)
 
     df: DataFrame = pd.DataFrame(artifacts)
-    generate_csv(REPORT_DIR, 'museum.csv', df)
-    generate_html(REPORT_DIR, 'museum.html', df)
-    generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
-    generate_xml(REPORT_DIR, 'museum.csv')
 
+    csv_converter: CSVConverter = CSVConverter(REPORT_DIR, 'museum.csv', df)
+    csv_converter.generate_csv()
 
+    html_converter: HTMLConverter = HTMLConverter(REPORT_DIR, 'museum.html', df)
+    html_converter.generate_html()
+
+    pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
+    pdf_converter.generate_pdf()
+
+    xml_converter = XMLConverter(REPORT_DIR, 'museum.csv')
+    xml_converter.generate_xml()
 
