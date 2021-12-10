@@ -12,6 +12,7 @@ from flatten import flatten
 # from generate_xml import generate_xml
 
 from generate_csv import CSVConverter
+from generate_html import HTMLConverter
 
 LIMIT = 20
 
@@ -41,6 +42,10 @@ if __name__ == '__main__':
 
     csv_converter: CSVConverter = CSVConverter(REPORT_DIR, 'museum.csv', df)
     csv_converter.generate_csv()
+
+    html_converter = HTMLConverter(REPORT_DIR, 'museum.html', df)
+    html_converter.generate_html()
+
     # generate_html(REPORT_DIR, 'museum.html', df)
     # generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
     # generate_xml(REPORT_DIR, 'museum.csv')
