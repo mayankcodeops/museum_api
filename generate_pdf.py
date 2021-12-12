@@ -14,27 +14,20 @@ class PDFConverter:
 
         Attributes
         ----------
-        directory: str
-            the directory path for generating CSV reports
-        pdf_name: str
-            name of the PDF report to be generated
-        html_report: name of the HTML report from which PDF report is to be generated
 
         Methods
         -------
-        generate_pdf(self)
+        generate_pdf(directory, pdf_name, html_report)
             Generates PDF report from HTML file
         """
-    def __init__(self, directory, pdf_name, html_report):
-        self.directory = directory
-        self.pdf_name = pdf_name
-        self.html_report = html_report
 
-    def generate_pdf(self):
-        if not file_exists(os.path.join(REPORT_DIR, self.html_report)):
+    @staticmethod
+    def convert(directory, pdf_name, html_report):
+        if not file_exists(os.path.join(REPORT_DIR, html_report)):
             logging.exception(f'FileNotFoundError: HTML report doesnt exist')
         try:
-            pdfkit.from_file(self.directory + self.pdf_name, self.directory + self.html_report)
+            pdfkit.from_file(directory + html_report, directory + pdf_name)
         except IOError as ae:
             logging.exception(f'{ae.args[-1]}')
             sys.exit(1)
+
