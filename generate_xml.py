@@ -43,7 +43,7 @@ class XMLConverter:
         """
 
     @staticmethod
-    def generate_xml(directory, csv_file):
+    def convert(directory, csv_file):
         if not file_exists(os.path.join(REPORT_DIR, csv_file)):
             raise FileNotFoundError
         try:

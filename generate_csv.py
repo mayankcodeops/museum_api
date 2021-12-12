@@ -15,7 +15,7 @@ class CSVConverter:
         Generates CSV report from JSON data
     """
     @staticmethod
-    def generate_csv(directory, filename, df):
+    def convert(directory, filename, df):
         """
         This member function generates CSV reports from a pandas dataframe
         :param directory:

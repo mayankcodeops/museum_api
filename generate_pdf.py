@@ -22,7 +22,7 @@ class PDFConverter:
         """
 
     @staticmethod
-    def generate_pdf(directory, pdf_name, html_report):
+    def convert(directory, pdf_name, html_report):
         if not file_exists(os.path.join(REPORT_DIR, html_report)):
             logging.exception(f'FileNotFoundError: HTML report doesnt exist')
         try:

@@ -8,10 +8,7 @@ from fetch_response import fetch_response
 from flatten import flatten
 
 
-from generate_csv import CSVConverter
-from generate_html import HTMLConverter
-from generate_pdf import PDFConverter
-from generate_xml import XMLConverter
+from converter import Converter
 
 LIMIT = 20
 
@@ -39,21 +36,10 @@ if __name__ == '__main__':
 
     df: DataFrame = pd.DataFrame(artifacts)
 
-    # TODO: converter = Converter()
-    # TODO: converter.generate_csv(REPORT_DIR, 'museum.csv', df)
-    # TODO: converter.generate_html(REPORT_DIR, 'museum.html', df)
-    # TODO: converter.generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
-    # TODO: converter.generate_xml(REPORT_DIR, 'museum.csv')
+    converter = Converter()
+    converter.convert_to_csv(REPORT_DIR, 'museum.csv', df)
+    converter.convert_to_html(REPORT_DIR, 'museum.html', df)
+    converter.convert_to_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
+    converter.convert_to_xml(REPORT_DIR, 'museum.csv')
 
-    csv_converter: CSVConverter = CSVConverter()
-    csv_converter.generate_csv(REPORT_DIR, 'museum.csv', df)
-
-    html_converter: HTMLConverter = HTMLConverter()
-    html_converter.generate_html(REPORT_DIR, 'museum.html', df)
-
-    pdf_converter = PDFConverter()
-    pdf_converter.generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
-
-    xml_converter = XMLConverter()
-    xml_converter.generate_xml(REPORT_DIR, 'museum.csv')
 

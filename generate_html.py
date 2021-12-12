@@ -15,7 +15,7 @@ class HTMLConverter:
             Generates CSV report from JSON data
         """
     @staticmethod
-    def generate_html(directory, filename, df):
+    def convert(directory, filename, df):
         if not os.path.exists(directory):
             try:
                 os.mkdir('reports')
