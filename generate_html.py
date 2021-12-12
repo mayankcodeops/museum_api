@@ -19,7 +19,7 @@ class HTMLConverter:
         generate_html(self)
             Generates CSV report from JSON data
         """
-    def __init__(self, directory, filename, df):
+    def __init__(self, directory: object, filename: object, df: object) -> object:
         self.directory = directory
         self.filename = filename
         self.df = df

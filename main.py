@@ -39,15 +39,25 @@ if __name__ == '__main__':
 
     df: DataFrame = pd.DataFrame(artifacts)
 
-    csv_converter: CSVConverter = CSVConverter(REPORT_DIR, 'museum.csv', df)
-    csv_converter.generate_csv()
+    # TODO: Change the class signature, should be:
+    # TODO: csv_convertor = CSVConverter()
+    # TODO: csv_convertor.generate_csv(REPORT_DIR, 'museum.csv', df)
+    # TODO: To make it more generic it should be something like
+    # TODO: converter = Converter()
+    # TODO: converter.generate_csv(REPORT_DIR, 'museum.csv', df)
+    # TODO: converter.generate_html(REPORT_DIR, 'museum.html', df)
+    # TODO: converter.generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
+    # TODO: converter.generate_xml(REPORT_DIR, 'museum.csv')
 
-    html_converter: HTMLConverter = HTMLConverter(REPORT_DIR, 'museum.html', df)
-    html_converter.generate_html()
+    csv_converter: CSVConverter = CSVConverter()
+    csv_converter.generate_csv(REPORT_DIR, 'museum.csv', df)
 
-    pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
-    pdf_converter.generate_pdf()
-
-    xml_converter = XMLConverter(REPORT_DIR, 'museum.csv')
-    xml_converter.generate_xml()
+    # html_converter: HTMLConverter = HTMLConverter(REPORT_DIR, 'museum.html', df)
+    # html_converter.generate_html()
+    #
+    # pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
+    # pdf_converter.generate_pdf()
+    #
+    # xml_converter = XMLConverter(REPORT_DIR, 'museum.csv')
+    # xml_converter.generate_xml()
 
