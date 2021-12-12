@@ -55,8 +55,8 @@ if __name__ == '__main__':
     html_converter: HTMLConverter = HTMLConverter()
     html_converter.generate_html(REPORT_DIR, 'museum.html', df)
 
-    # pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
-    # pdf_converter.generate_pdf()
+    pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
+    pdf_converter.generate_pdf()
     #
     # xml_converter = XMLConverter(REPORT_DIR, 'museum.csv')
     # xml_converter.generate_xml()
