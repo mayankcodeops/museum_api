@@ -39,10 +39,6 @@ if __name__ == '__main__':
 
     df: DataFrame = pd.DataFrame(artifacts)
 
-    # TODO: Change the class signature, should be:
-    # TODO: csv_convertor = CSVConverter()
-    # TODO: csv_convertor.generate_csv(REPORT_DIR, 'museum.csv', df)
-    # TODO: To make it more generic it should be something like
     # TODO: converter = Converter()
     # TODO: converter.generate_csv(REPORT_DIR, 'museum.csv', df)
     # TODO: converter.generate_html(REPORT_DIR, 'museum.html', df)
@@ -55,8 +51,8 @@ if __name__ == '__main__':
     html_converter: HTMLConverter = HTMLConverter()
     html_converter.generate_html(REPORT_DIR, 'museum.html', df)
 
-    # pdf_converter = PDFConverter()
-    # pdf_converter.generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
+    pdf_converter = PDFConverter()
+    pdf_converter.generate_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
 
     xml_converter = XMLConverter()
     xml_converter.generate_xml(REPORT_DIR, 'museum.csv')
