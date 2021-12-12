@@ -52,9 +52,9 @@ if __name__ == '__main__':
     csv_converter: CSVConverter = CSVConverter()
     csv_converter.generate_csv(REPORT_DIR, 'museum.csv', df)
 
-    # html_converter: HTMLConverter = HTMLConverter(REPORT_DIR, 'museum.html', df)
-    # html_converter.generate_html()
-    #
+    html_converter: HTMLConverter = HTMLConverter()
+    html_converter.generate_html(REPORT_DIR, 'museum.html', df)
+
     # pdf_converter = PDFConverter(REPORT_DIR, 'museum.pdf', 'museum.html')
     # pdf_converter.generate_pdf()
     #
