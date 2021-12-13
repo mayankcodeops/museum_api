@@ -10,7 +10,7 @@ from src.reporter.converter.converter import Converter
 
 from config import config
 
-CONFIG_NAME = os.environ.get('CONFIG_NAME', 'development')
+CONFIG_NAME = os.environ.get('CONFIG_NAME', 'default')
 
 logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s : %(levelname)s : %(message)s',
                     level=config[CONFIG_NAME].LOG_LEVEL)
