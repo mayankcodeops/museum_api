@@ -1,12 +1,7 @@
 import os
-from file_exists import file_exists
+from ..helpers.file_exists import file_exists
 import logging
 import csv
-
-
-BASE_URL = 'https://collectionapi.metmuseum.org/public/'
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
 class XMLConverter:
@@ -44,7 +39,7 @@ class XMLConverter:
 
     @staticmethod
     def convert(directory, csv_file):
-        if not file_exists(os.path.join(REPORT_DIR, csv_file)):
+        if not file_exists(os.path.join(directory, csv_file)):
             raise FileNotFoundError
         try:
             f = open(directory + csv_file)
@@ -60,7 +55,7 @@ class XMLConverter:
 
         # write the XML objects in to an XML file
         try:
-            with open(REPORT_DIR + 'museum.xml', 'w') as museum:
+            with open(directory + 'museum.xml', 'w') as museum:
                 museum.write('\n'.join([__class__.convert_row(row) for row in data[1:]]))
         except OSError as err:
             logging.exception("Writing to xml file failed due to {}".format(err))

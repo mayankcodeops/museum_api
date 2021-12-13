@@ -1,8 +1,11 @@
+import os
+
 import requests
 import logging
 import sys
 
-BASE_URL = 'https://collectionapi.metmuseum.org/public/'
+from config import config
+BASE_URL = config[os.environ.get('CONFIG_NAME', 'development')].BASE_URL
 REQ_TIMEOUT = 3
 
 

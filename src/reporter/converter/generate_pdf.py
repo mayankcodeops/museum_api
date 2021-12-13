@@ -1,11 +1,8 @@
-from file_exists import file_exists
+from ..helpers.file_exists import file_exists
 import pdfkit
 import logging
 import sys
 import os
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
 
 
 class PDFConverter:
@@ -23,7 +20,7 @@ class PDFConverter:
 
     @staticmethod
     def convert(directory, pdf_name, html_report):
-        if not file_exists(os.path.join(REPORT_DIR, html_report)):
+        if not file_exists(os.path.join(directory, html_report)):
             logging.exception(f'FileNotFoundError: HTML report doesnt exist')
         try:
             pdfkit.from_file(directory + html_report, directory + pdf_name)
