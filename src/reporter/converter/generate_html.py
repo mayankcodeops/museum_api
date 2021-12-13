@@ -18,7 +18,7 @@ class HTMLConverter:
     def convert(directory, filename, df):
         if not os.path.exists(directory):
             try:
-                os.mkdir('reports')
+                os.mkdir('../../../reports')
             except OSError as ae:
                 logging.exception("Something went wrong while creating the reports directory: {}".format(ae.args[-1]))
 

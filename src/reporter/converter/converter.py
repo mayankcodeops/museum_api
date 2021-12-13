@@ -1,7 +1,7 @@
-from generate_csv import CSVConverter
-from generate_html import HTMLConverter
-from generate_pdf import PDFConverter
-from generate_xml import XMLConverter
+from .generate_csv import CSVConverter
+from .generate_html import HTMLConverter
+from .generate_pdf import PDFConverter
+from .generate_xml import XMLConverter
 
 
 class Converter:

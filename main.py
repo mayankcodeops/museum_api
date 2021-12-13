@@ -4,13 +4,16 @@ import os
 import pandas as pd
 from pandas import DataFrame
 
-from fetch_response import fetch_response
-from flatten import flatten
+from src.reporter.helpers.fetch_response import fetch_response
+from src.reporter.helpers.flatten import flatten
+from src.reporter.converter.converter import Converter
 
+from config import config
 
-from converter import Converter
+CONFIG_NAME = os.environ.get('CONFIG_NAME', 'development')
 
-LIMIT = 20
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s : %(levelname)s : %(message)s',
+                    level=config[CONFIG_NAME].LOG_LEVEL)
 
 
 headers: dict[str, str] = {
@@ -18,28 +21,19 @@ headers: dict[str, str] = {
     'Content-Type': 'application/json'
 }
 
-logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s : %(levelname)s : %(message)s',
-                    level=logging.DEBUG)
-
-BASE_URL = 'https://collectionapi.metmuseum.org/public/'
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-REPORT_DIR = os.path.join(BASE_DIR, 'reports/')
-
 
 if __name__ == '__main__':
     artifacts: list[dict] = list(
         map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=headers)
             .json(),
-            list(range(1, LIMIT + 1))))
+            list(range(1, config[CONFIG_NAME].API_RESP_LIMIT + 1))))
     for artifact in artifacts:
         flatten(artifact)
 
     df: DataFrame = pd.DataFrame(artifacts)
 
     converter = Converter()
-    converter.convert_to_csv(REPORT_DIR, 'museum.csv', df)
-    converter.convert_to_html(REPORT_DIR, 'museum.html', df)
-    converter.convert_to_pdf(REPORT_DIR, 'museum.pdf', 'museum.html')
-    converter.convert_to_xml(REPORT_DIR, 'museum.csv')
-
-
+    converter.convert_to_csv(config[CONFIG_NAME].REPORT_DIR, 'museum.csv', df)
+    converter.convert_to_html(config[CONFIG_NAME].REPORT_DIR, 'museum.html', df)
+    converter.convert_to_pdf(config[CONFIG_NAME].REPORT_DIR, 'museum.pdf', 'museum.html')
+    converter.convert_to_xml(config[CONFIG_NAME].REPORT_DIR, 'museum.csv')
