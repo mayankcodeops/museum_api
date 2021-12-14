@@ -30,10 +30,13 @@ class XMLConverter:
             <isHighlight>{row[1]}</isHighlight>
             <accessionNumber>{row[2]}</accessionNumber>
             <accessionYear>{row[3]}</accessionYear>
-            <isPublicDomain>{row[4]}</isPublicDomain>
-            <department>{row[9]}<department>
-            <objectName>{row[10]}</objectName>
-            <title>{row[11]}</title>
+            <isPublicDomain>{row[4]}</isPublicDomain>            
+            <department>{row[7]}<department>
+            <objectName>{row[8]}</objectName>
+            <title>{row[9]}</title>
+            <artistRole>{row[15]}</artistRole>
+            <artistDisplayName>{row[17]}</artistDisplayName>
+            <artistDisplayBio>{row[18]}</artistDisplayBio>
         </object>
         """
 
