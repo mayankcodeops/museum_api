@@ -45,7 +45,7 @@ class XMLConverter:
         if not file_exists(os.path.join(directory, csv_file)):
             raise FileNotFoundError
         try:
-            f = open(directory + csv_file)
+            f = open(os.path.join(directory, csv_file))
         except OSError as ae:
             logging.exception("Something went wrong while accessing the CSV report: {}".format(ae.args[-1]))
         else:

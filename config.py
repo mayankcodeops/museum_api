@@ -17,7 +17,9 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.DEBUG
+    REPORT_DIR = os.path.join(BASE_DIR, 'tests/test_reports')
+    API_RESP_LIMIT = 10
 
 
 class ProductionConfig(Config):

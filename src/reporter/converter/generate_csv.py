@@ -23,10 +23,13 @@ class CSVConverter:
         :param df:
         :return: None
         """
-        if not os.path.exists(directory):
-            try:
-                os.mkdir('../../../reports')
-            except OSError as ae:
-                logging.exception("Something went wrong while creating the reports directory: {}".format(ae.args[-1]))
-
-        df.to_csv(directory + filename, mode='w', index=False)
+        if os.environ.get('CONFIG_NAME') != 'testing':
+            if not os.path.exists(directory):
+                try:
+                    os.mkdir('../../../reports')
+                except OSError as ae:
+                    logging.exception("Something went wrong while creating the reports directory: {}"
+                                      .format(ae.args[-1]))
+            df.to_csv(os.path.join(directory, filename), mode='w', index=False)
+        else:
+            df.to_csv(os.path.join(directory, filename), mode='w', index=False)

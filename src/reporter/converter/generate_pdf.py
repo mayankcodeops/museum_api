@@ -23,7 +23,8 @@ class PDFConverter:
         if not file_exists(os.path.join(directory, html_report)):
             logging.exception(f'FileNotFoundError: HTML report doesnt exist')
         try:
-            pdfkit.from_file(directory + html_report, directory + pdf_name, options={'page-size': 'B0', 'dpi': 400})
+            pdfkit.from_file(os.path.join(directory, html_report), os.path.join(directory, pdf_name),
+                             options={'page-size': 'B0', 'dpi': 400})
         except IOError as ae:
             logging.exception(f'{ae.args[-1]}')
             sys.exit(1)

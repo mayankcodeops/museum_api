@@ -1,0 +1,84 @@
+import logging
+import os.path
+import unittest
+import json
+from unittest.mock import Mock, patch
+
+from config import config
+from src.reporter.helpers.fetch_response import fetch_response
+
+logging.basicConfig(filename='testing.log', filemode='w', format='%(asctime)s : %(levelname)s : %(message)s',
+                    level=config['testing'].LOG_LEVEL)
+
+
+class APIIntegrationContract(unittest.TestCase):
+    def setUp(self):
+        self.BASE_URL = config['testing'].BASE_URL
+        self.endpoint = 'collection/v1/objects/1'
+        self.headers = {'Accept': '*/*', 'Content-Type': 'application/json'}
+
+    def test_integration_contract(self):
+        actual_resp = fetch_response(self.endpoint, header=self.headers)
+        actual_keys = actual_resp.json().keys()
+        logging.debug(f'Response Status: {actual_resp.status_code}')
+        logging.debug(f'Actual API resp keys: {actual_keys}')
+        # call mocked requests.get
+        try:
+            f = open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'fixtures/resp.json'))
+        except FileNotFoundError as fnfe:
+            logging.exception(f"Could not load JSON mock data for API Integration Test: {fnfe.args[-1]}")
+        else:
+            json_data = json.load(f)
+            with patch('src.reporter.helpers.fetch_response.requests.get') as mock_get:
+                mock_get.return_value.ok = True
+                mock_get.return_value.json.return_value = json_data
+
+                mocked_resp = fetch_response(self.endpoint, header=self.headers)
+                mocked_keys = mocked_resp.json().keys()
+                logging.debug(f'Mocked JSON keys: {mocked_keys}')
+
+            # Compare the actual resp json_keys and mocked resp json_keys for same data-structure
+            self.assertEqual(actual_keys, mocked_keys)
+        finally:
+            f.close()
+
+
+class TestFetchResponse(unittest.TestCase):
+    def setUp(self):
+        self.BASE_URL = config['testing'].BASE_URL
+        self.endpoint = 'collection/v1/objects/1'
+        self.headers = {'Accept': '*/*', 'Content-Type': 'application/json'}
+        self.mock_requests_get_patcher = patch('src.reporter.helpers.fetch_response.requests.get')
+        self.mock_request_get = self.mock_requests_get_patcher.start()
+
+    def test_fetch_response_response_is_ok(self):
+        self.mock_request_get.return_value.ok = True
+        response = fetch_response(self.endpoint, header=self.headers)
+        self.assertTrue(response.ok)
+
+    def test_fetch_response_response_is_not_ok(self):
+        self.mock_request_get.return_value.ok = False
+        response = fetch_response(self.endpoint, header=self.headers)
+        self.assertFalse(response.ok)
+
+    def test_getting_json_fetch_response(self):
+        try:
+            f = open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'fixtures/resp.json'))
+        except FileNotFoundError as fnfe:
+            logging.exception(f"Could not load JSON mock data for fetch_response: {fnfe.args[-1]}")
+        else:
+            json_data = json.load(f)
+        finally:
+            f.close()
+        self.mock_request_get.return_value = Mock(ok=True)
+        self.mock_request_get.return_value.json.return_value = json_data
+
+        response = fetch_response(self.endpoint, header=self.headers)
+        self.assertEqual(response.json(), json_data)
+
+    def tearDown(self):
+        self.mock_requests_get_patcher.stop()
+
+
+if __name__ == '__main__':
+    unittest.main()

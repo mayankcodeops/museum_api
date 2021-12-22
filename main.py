@@ -2,10 +2,8 @@ import logging
 import os
 
 import pandas as pd
-from pandas import DataFrame
 
 from src.reporter.helpers.fetch_response import fetch_response
-from src.reporter.helpers.flatten import flatten
 from src.reporter.converter.converter import Converter
 
 from config import config
@@ -33,7 +31,7 @@ if __name__ == '__main__':
     meta = list(df1.keys())
     meta.remove('additionalImages')
 
-    df2 = pd.json_normalize(artifacts, record_path=['constituents'], meta=meta,errors='ignore')
+    df2 = pd.json_normalize(artifacts, record_path=['constituents'], meta=meta, errors='ignore')
     df2 = df2.iloc[:, list(range(6, 61)) + list(range(0, 6))]
 
     converter = Converter()
