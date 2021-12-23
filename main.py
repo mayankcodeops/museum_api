@@ -24,7 +24,7 @@ if __name__ == '__main__':
     artifacts: list[dict] = list(
         map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=headers)
             .json(),
-            list(range(1, config[CONFIG_NAME].API_RESP_LIMIT + 1))))
+            list(list(range(1, config[CONFIG_NAME].API_RESP_LIMIT + 1)))))
 
     df1 = pd.json_normalize(artifacts).drop(columns=['constituents'])
 
