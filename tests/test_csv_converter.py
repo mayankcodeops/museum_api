@@ -9,6 +9,7 @@ import tempfile
 
 from src.reporter.helpers.fetch_response import fetch_response
 from src.reporter.converter import generate_csv
+from .test_mock_server import start_mock_server, get_free_port
 
 fixture_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'fixtures/')
 test_rep_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'test_reports/')
@@ -18,9 +19,11 @@ logging.basicConfig(filename='testing.log', filemode='w', format='%(asctime)s : 
 
 class TestCSVGenerator(unittest.TestCase):
     def setUp(self):
+        self.endpoint = 'collection/v1/objects/1'
         self.headers = {'Accept': '*/*', 'Content-Type': 'application/json'}
-        self.mock_requests_get_patcher = patch('src.reporter.helpers.fetch_response.requests.get')
-        self.mock_request_get = self.mock_requests_get_patcher.start()
+        self.mock_server_port = get_free_port()
+        self.mock_url = 'http://localhost:{port}/'.format(port=self.mock_server_port)
+        start_mock_server(self.mock_server_port)
 
         try:
             f = open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'fixtures/resp.json'))
@@ -28,8 +31,6 @@ class TestCSVGenerator(unittest.TestCase):
             logging.exception(f"Could not load JSON mock data for TestCSVConverter: {fnfe.args[-1]}")
         else:
             self.json_data = json.load(f)
-            self.mock_request_get.return_value = Mock(ok=True)
-            self.mock_request_get.return_value.json.return_value = self.json_data
         finally:
             f.close()
         self.df = self.generate_dataframe()
@@ -37,10 +38,11 @@ class TestCSVGenerator(unittest.TestCase):
 
     def generate_dataframe(self):
         import pandas as pd
-        artifacts: list[dict] = list(
-            map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=self.headers)
-                .json(),
-                list(range(1, config['testing'].API_RESP_LIMIT + 1))))
+        with patch.dict('src.reporter.helpers.fetch_response.__dict__', {'BASE_URL': self.mock_url}):
+            artifacts: list[dict] = list(
+                map(lambda objectid: fetch_response(self.endpoint, header=self.headers)
+                    .json(),
+                    list(range(1, config['testing'].API_RESP_LIMIT + 1))))
 
         df1 = pd.json_normalize(artifacts).drop(columns=['constituents'])
 
@@ -67,7 +69,7 @@ class TestCSVGenerator(unittest.TestCase):
                 self.assertEqual(original_csv, generated_csv)
 
     def tearDown(self):
-        self.mock_requests_get_patcher.stop()
+        pass
 
 
 if __name__ == '__main__':
