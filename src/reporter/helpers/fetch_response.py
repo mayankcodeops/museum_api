@@ -5,6 +5,7 @@ import logging
 import sys
 
 from config import config
+from urllib.parse import urljoin
 BASE_URL = config[os.environ.get('CONFIG_NAME', 'development')].BASE_URL
 REQ_TIMEOUT = 3
 
@@ -16,7 +17,7 @@ def fetch_response(endpoint, header):
     """
     # check if the url is valid or not
     try:
-        resp = requests.get(BASE_URL + endpoint, headers=header, timeout=REQ_TIMEOUT)
+        resp = requests.get(urljoin(BASE_URL, endpoint), headers=header, timeout=REQ_TIMEOUT)
     except (requests.ConnectionError, requests.Timeout) as e:
         logging.exception("Connection error or Request Timed Out: {}".format(e.args[-1]))
         sys.exit(1)
