@@ -10,6 +10,11 @@ logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s : %(le
 
 
 def zip_reports(compressed_file, *args):
+    """
+    Creates a compressed zip of all the reports in the desired directory
+    :compressed_file: name of the zip file to be created.
+    :args: takes in the files that are needed to be compressed to a zip file
+    """
     try:
         with zipfile.ZipFile(compressed_file, 'w') as zipped_report:
             for file in args:
