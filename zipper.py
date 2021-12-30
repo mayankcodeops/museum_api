@@ -17,6 +17,9 @@ def zip_reports(compressed_file, *args):
                 if os.path.isfile(file_path):
                     zipped_report.write(file_path,
                                         compress_type=zipfile.ZIP_DEFLATED)
+                else:
+                    logging.error(f"No file with filename: {file} exists in the {config[CONFIG_NAME].REPORT_DIR}. "
+                                  f"Proceeding with other file compression")
     except OSError as error:
         logging.exception(f"OSError while writing reports import a zip: {error.args[-1]}")
 
