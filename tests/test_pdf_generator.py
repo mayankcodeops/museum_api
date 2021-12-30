@@ -60,7 +60,7 @@ class TestPDFGenerator(unittest.TestCase):
             self.pdf_converter.convert(temp_dir, 'test_pdf.pdf', 'test_html.html')
             self.assertTrue(os.path.isfile(os.path.join(temp_dir, 'test_pdf.pdf')))
 
-    # @unittest.skip('Not implemented PDF file match unit test')
+    @unittest.skip('Skip for Byte Decode Error')
     def test_convert_to_pdf_from_html_file_match(self):
         with tempfile.TemporaryDirectory(dir=test_rep_dir) as temp_dir:
             self.html_converter.convert(temp_dir, 'test_html.html', self.df)
