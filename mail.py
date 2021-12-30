@@ -24,6 +24,15 @@ CONFIG_NAME = os.environ.get('CONFIG_NAME', 'default')
 
 
 def construct_message(sender, receiver, subject, body, file):
+    """
+    Constructes a MIMEMultipart message to send through SMTPLib
+    :param sender: mail address of the sender or admin
+    :param receiver: mail address of the receiver
+    :param subject: subject of the mail to be sent
+    :param body: html body of the mail, can be a template
+    :param file: any attachment to be sent with mail
+    :return: MIMEMultipart object
+    """
     message = MIMEMultipart()
     message["From"] = sender
     message["To"] = receiver
@@ -31,25 +40,34 @@ def construct_message(sender, receiver, subject, body, file):
 
     message.attach(MIMEText(body, "html"))
 
-    try:
-        with open(file, "rb") as attachment:
-            part = MIMEBase("application", "octet-stream")
-            part.set_payload(attachment.read())
-    except OSError as err:
-        logging.exception(f"Error while writing attachments to payload stream: {err.args[-1]}")
+    if file is not None:
+        try:
+            with open(file, "rb") as attachment:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(attachment.read())
+        except OSError as err:
+            logging.exception(f"Error while writing attachments to payload stream: {err.args[-1]}")
 
-    encoders.encode_base64(part)
+        encoders.encode_base64(part)
 
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename = {file}"
-    )
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename = {file}"
+        )
 
-    message.attach(part)
+        message.attach(part)
     return message
 
 
 def send_mail(sender, receiver, subject, body, attachment=None):
+    """
+    Send mail using SMTPLib
+    :param sender: mail address of the sender or admin
+    :param receiver: mail address of the receiver
+    :param subject: subject of the mail to be sent
+    :param body: body of the mail,can be template
+    :param attachment: attachment to be sent with the mail, default=None
+    """
     message = construct_message(sender, receiver, subject, body, attachment)
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=ssl.create_default_context()) as server:
         server.login(email, password)
