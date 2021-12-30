@@ -10,6 +10,8 @@ class Config:
     API_RESP_LIMIT = os.environ.get('API_RESP_LIMIT', 20)
     LOG_LEVEL = os.environ.get('LOG_LEVEL', 'WARNING')
     REQ_TIMEOUT = 3
+    ADMIN_MAIL = os.environ.get('ADMIN_MAIL', 'mayank.nimcet.188@gmail.com')
+    MAIL_PASSWD = os.environ.get('MAIL_PASSWD')
 
 
 class DevelopmentConfig(Config):
@@ -17,7 +19,9 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-    LOG_LEVEL = logging.INFO
+    LOG_LEVEL = logging.DEBUG
+    REPORT_DIR = os.path.join(BASE_DIR, 'tests/test_reports')
+    API_RESP_LIMIT = 10
 
 
 class ProductionConfig(Config):

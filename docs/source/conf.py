@@ -17,12 +17,12 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'API Report Generator'
+project = 'Reporter'
 copyright = '2021, Mayank Sharma'
 author = 'Mayank Sharma'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '0.0.2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,6 +32,7 @@ release = '0.1'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

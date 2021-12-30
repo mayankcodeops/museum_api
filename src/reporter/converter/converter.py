@@ -31,7 +31,7 @@ class Converter:
     @staticmethod
     def convert_to_pdf(directory, pdf_name, html_report):
         """
-        Converts HTML report to PDF format
+        Converts HTML reports to PDF format
         :param directory: directory path for creating the PDF report
         :param pdf_name: name of the PDF report to be generated
         :param html_report: name of the HTML report

@@ -1,13 +1,11 @@
-.. API Report Generator documentation master file, created by
-   sphinx-quickstart on Wed Dec  8 12:57:37 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Reporter's documentation!
+=========================
+**Reporter** is a Python library for generating CSV, HTML, XML and PDF reports from API data
 
-Welcome to API Report Generator's documentation!
-================================================
+Check out the :doc:`usage` section for further information.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
    :caption: Contents:
 
 
@@ -20,5 +18,10 @@ Indices and tables
 * :ref:`search`
 
 Contents
-==================
-* :ref:`generate_csv`
+--------
+
+.. toctree::
+
+    usage
+    api
+    reporter

@@ -2,10 +2,8 @@ import logging
 import os
 
 import pandas as pd
-from pandas import DataFrame
 
 from src.reporter.helpers.fetch_response import fetch_response
-from src.reporter.helpers.flatten import flatten
 from src.reporter.converter.converter import Converter
 
 from config import config
@@ -26,14 +24,14 @@ if __name__ == '__main__':
     artifacts: list[dict] = list(
         map(lambda objectid: fetch_response('collection/v1/objects/' + str(objectid), header=headers)
             .json(),
-            list(range(1, config[CONFIG_NAME].API_RESP_LIMIT + 1))))
+            list(list(range(1, config[CONFIG_NAME].API_RESP_LIMIT + 1)))))
 
     df1 = pd.json_normalize(artifacts).drop(columns=['constituents'])
 
     meta = list(df1.keys())
     meta.remove('additionalImages')
 
-    df2 = pd.json_normalize(artifacts, record_path=['constituents'], meta=meta,errors='ignore')
+    df2 = pd.json_normalize(artifacts, record_path=['constituents'], meta=meta, errors='ignore')
     df2 = df2.iloc[:, list(range(6, 61)) + list(range(0, 6))]
 
     converter = Converter()
