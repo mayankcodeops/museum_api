@@ -23,40 +23,46 @@ logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s : %(le
 CONFIG_NAME = os.environ.get('CONFIG_NAME', 'default')
 
 
-def construct_message(sender, receiver, subject, body, file):
+def construct_message(sender_email, receiver_email, subject, body, file_attachment):
     """
-    Constructes a MIMEMultipart message to send through SMTPLib
-    :param sender: mail address of the sender or admin
-    :param receiver: mail address of the receiver
+    Constructs a MIMEMultipart message to send through SMTPLib
+    :param sender_email: mail address of the sender or admin
+    :param receiver_email: mail address of the receiver
     :param subject: subject of the mail to be sent
     :param body: html body of the mail, can be a template
-    :param file: any attachment to be sent with mail
+    :param file_attachment: any attachment to be sent with mail
     :return: MIMEMultipart object
     """
     message = MIMEMultipart()
-    message["From"] = sender
-    message["To"] = receiver
+    message["From"] = sender_email
+    message["To"] = receiver_email
     message["Subject"] = subject
 
     message.attach(MIMEText(body, "html"))
 
-    if file is not None:
-        try:
-            with open(file, "rb") as attachment:
-                part = MIMEBase("application", "octet-stream")
-                part.set_payload(attachment.read())
-        except OSError as err:
-            logging.exception(f"Error while writing attachments to payload stream: {err.args[-1]}")
-
-        encoders.encode_base64(part)
-
-        part.add_header(
-            "Content-Disposition",
-            f"attachment; filename = {file}"
-        )
-
-        message.attach(part)
+    if file_attachment is not None:
+        attach_file_to_mime_object(file_attachment, message)
     return message
+
+
+def attach_file_to_mime_object(file, message):
+    """
+    Attaches file to the MIMEMultipart Object
+    :param file: file to be attached with the MIMEMultipart object
+    :param message: MIMEMultipart object
+    """
+    try:
+        with open(file, "rb") as attachment:
+            part = MIMEBase("application", "octet-stream")
+            part.set_payload(attachment.read())
+    except OSError as err:
+        logging.exception(f"Error while writing attachments to payload stream: {err.args[-1]}")
+    encoders.encode_base64(part)
+    part.add_header(
+        "Content-Disposition",
+        f"attachment; filename = {file}"
+    )
+    message.attach(part)
 
 
 def send_mail(sender, receiver, subject, body, attachment=None):
